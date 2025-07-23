@@ -92,6 +92,7 @@ Route::post('/confirm-order', [OrderController::class, 'confirmOrder']);
 Route::get('/cart-products-count/{ip}', [ProductController::class, 'countCartProducts']);
 Route::get('/get-cart-products/{ip}', [ProductController::class, 'getCartProducts']);
 Route::get('/delete-cart/{id}', [ProductController::class, 'deleteCart']);
+Route::put('/cart/{id}', [ProductController::class, 'update']);
 
 //Order Details...
 Route::get('/order-details/{orderId}', [OrderController::class, 'orderDetails']);

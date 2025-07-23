@@ -25,7 +25,7 @@ class ProductController extends Controller
             $newProducts = Product::where('product_type', 'new')->where('status', 1)->orderBy('priority', 'desc')->paginate(30);
             $regularProducts = Product::where('product_type', 'feature')->where('status', 1)->orderBy('priority', 'desc')->paginate(30);
             $discountProducts = Product::where('product_type', 'discount')->where('status', 1)->orderBy('priority', 'desc')->paginate(30);
-    
+
             // Check if all products are empty
             if ($hotProducts->isEmpty() && $newProducts->isEmpty() && $regularProducts->isEmpty() && $discountProducts->isEmpty()) {
                 return response()->json([
@@ -34,7 +34,7 @@ class ProductController extends Controller
                     'data' => null
                 ], 404);
             }
-    
+
             // Collecting all products
             $products = [
                 'hotProducts' => $hotProducts,
@@ -42,7 +42,7 @@ class ProductController extends Controller
                 'regularProducts' => $regularProducts,
                 'discountProducts' => $discountProducts,
             ];
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Products retrieved successfully',
@@ -61,7 +61,7 @@ class ProductController extends Controller
     {
         try {
             $product = Product::with('category', 'productImages', 'colors', 'sizes', 'reviews')->where('slug', $slug)->first();
-    
+
             if (!$product) {
                 return response()->json([
                     'success' => false,
@@ -69,13 +69,13 @@ class ProductController extends Controller
                     'data' => null
                 ], 404);
             }
-    
+
             $related = Product::with('reviews', 'category')
                 ->where('status', 1)
                 ->where('cat_id', $product->category ? $product->category->id : null)
                 ->where('id', '!=', $product->id)
                 ->get();
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Product retrieved successfully',
@@ -97,7 +97,7 @@ class ProductController extends Controller
     {
         try {
             $products = Product::where('status', 1)->orderBy('priority', 'desc')->paginate(50);
-    
+
             if ($products->isEmpty()) {
                 return response()->json([
                     'success' => false,
@@ -105,7 +105,7 @@ class ProductController extends Controller
                     'data' => null
                 ], 404);
             }
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Products retrieved successfully',
@@ -128,7 +128,7 @@ class ProductController extends Controller
             'qty' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
@@ -136,7 +136,7 @@ class ProductController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
-    
+
         $ip_address = $request->ip_address;
         $oldCartProduct = Cart::where('product_id', $id)->where('ip_address', $ip_address)->first();
 
@@ -159,7 +159,7 @@ class ProductController extends Controller
             }
         }
         //Check Previos Cart Product Type...
-        
+
         try {
             if ($oldCartProduct) {
                 $oldCartProduct->qty += $request->qty;
@@ -175,7 +175,7 @@ class ProductController extends Controller
                     'size'  => $request->size,
                 ]);
             }
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Product added to cart successfully',
@@ -190,11 +190,24 @@ class ProductController extends Controller
         }
     }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'qty' => 'required|integer|min:1',
+        ]);
+
+        $cart = Cart::findOrFail($id);
+        $cart->qty = $request->qty;
+        $cart->save();
+
+        return response()->json(['success' => true, 'message' => 'Cart updated successfully']);
+    }
+
     public function deleteCart ($id)
     {
         try {
             $cart = Cart::find($id);
-    
+
             if ($cart == null) {
                 return response()->json([
                     'success' => false,
@@ -202,10 +215,10 @@ class ProductController extends Controller
                     'data' => null
                 ], 404);
             }
-    
+
             // Deleting the cart
             $cart->delete();
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Cart deleted successfully',
@@ -226,7 +239,7 @@ class ProductController extends Controller
             $category = Category::where('slug', $slug)->first();
             $cat_id = $category->id;
             $products = Product::where('status', 1)->where('cat_id', $cat_id)->orderBy('priority', 'desc')->get();
-    
+
             if ($products->isEmpty()) {
                 return response()->json([
                     'success' => false,
@@ -234,7 +247,7 @@ class ProductController extends Controller
                     'data' => null
                 ], 404);
             }
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Products retrieved successfully',
@@ -255,7 +268,7 @@ class ProductController extends Controller
             $subCategory = Subcategory::where('slug', $slug)->first();
             $subcat_id = $subCategory->id;
             $products = Product::where('status', 1)->where('sub_cat_id', $subcat_id)->orderBy('priority', 'desc')->get();
-    
+
             if ($products->isEmpty()) {
                 return response()->json([
                     'success' => false,
@@ -263,7 +276,7 @@ class ProductController extends Controller
                     'data' => null
                 ], 404);
             }
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Products retrieved successfully',
@@ -290,7 +303,7 @@ class ProductController extends Controller
 
         try {
             $countProducts = Cart::where('ip_address', $ip)->count();
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Cart products count retrieved successfully',
@@ -301,7 +314,7 @@ class ProductController extends Controller
                 'ip' => $ip,
                 'exception' => $e
             ]);
-    
+
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to retrieve products count. ' . $e->getMessage(),
@@ -326,7 +339,7 @@ class ProductController extends Controller
             foreach($cartProducts as $product){
                 $subTotal = $subTotal + $product->price * $product->qty;
             }
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Cart products retrieved successfully',
@@ -340,7 +353,7 @@ class ProductController extends Controller
                 'ip' => $ip,
                 'exception' => $e
             ]);
-    
+
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to retrieve cart products.' . $e->getMessage(),
@@ -353,7 +366,7 @@ class ProductController extends Controller
     {
         try {
             $products = Product::where('name', 'like', '%' . $p_name . '%')->where('status', 1)->orderBy('priority', 'asc')->get();
-    
+
             if ($products->isEmpty()) {
                 return response()->json([
                     'success' => false,
@@ -361,7 +374,7 @@ class ProductController extends Controller
                     'data' => null
                 ], 404);
             }
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Products retrieved successfully',
