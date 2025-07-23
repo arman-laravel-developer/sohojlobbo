@@ -22,7 +22,7 @@ class OrderController extends Controller
             'customer_name' => 'required|string',
             'customer_phone' => 'required|string',
             'delivery_area' => 'required|numeric',
-            'customer_address' => 'required|string|min:10',
+            'customer_address' => 'required|string',
             'price' => 'required|numeric|min:0',
             'product_quantity' => 'required|integer',
             'payment_type' => 'required|string',
@@ -34,7 +34,7 @@ class OrderController extends Controller
             'products.*.size' => 'sometimes',
             'products.*.color' => 'sometimes',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
@@ -42,7 +42,7 @@ class OrderController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
-    
+
         try {
             DB::beginTransaction();
 
@@ -50,7 +50,7 @@ class OrderController extends Controller
             $data = $request->all();
             $firstProductId = $data['products'][0]['id'];
             $product = Product::find($firstProductId);
-            
+
             // Create Order
             $order = new Order();
             if($product->b_product_id == null){
@@ -68,25 +68,25 @@ class OrderController extends Controller
             $order->qty = $request->product_quantity;
             $order->payment_type = $request->payment_type;
             $order->order_type = $request->order_type;
-    
+
             $customerCheck = Order::where('phone', $request->customer_phone)->first();
             $order->customer_type = $customerCheck ? 'Old Customer' : 'New Customer';
-    
+
             // Assign to employee
             $users = Admin::where('name', '!=', 'admin')->where('is_active', 1)
                 ->whereDate('limit_updated_at', '!=', \Illuminate\Support\Carbon::today())->get();
-    
+
             $session_user = Session::get('id');
             if ($session_user && session('name') != 'admin') {
                 $order->employee_id = $session_user;
             } elseif ($users->isNotEmpty()) {
                 $randomUser = $users->random();
                 $order->employee_id = $randomUser->id;
-    
+
                 $assigned_employee_order = Order::where('employee_id', $randomUser->id)
                     ->whereDate('created_at', \Illuminate\Support\Carbon::today())
                     ->count();
-    
+
                 if ($assigned_employee_order >= $randomUser->order_limit) {
                     $randomUser->is_limit = true;
                     $randomUser->limit_updated_at = now();
@@ -96,9 +96,9 @@ class OrderController extends Controller
                 $admin = Admin::first();
                 $order->employee_id = $admin->id;
             }
-    
+
             $order->save();
-    
+
             // Create Order Details
             foreach ($request->products as $productData) {
                 $productOrder = new OrderDetails();
@@ -116,9 +116,9 @@ class OrderController extends Controller
             foreach($cartProducts as $product){
                 $product->delete();
             }
-    
+
             DB::commit();
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Order confirmed successfully',
@@ -138,7 +138,7 @@ class OrderController extends Controller
     {
         try {
             $order = Order::with('orderDetails')->where('orderId', $orderId)->first();
-    
+
             if (!$order) {
                 return response()->json([
                     'success' => false,
@@ -146,7 +146,7 @@ class OrderController extends Controller
                     'data' => null
                 ], 404);
             }
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Order retrieved successfully',
