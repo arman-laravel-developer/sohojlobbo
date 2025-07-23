@@ -1022,6 +1022,8 @@ class ProductController extends Controller
             $products = $responseData['products'] ?? [];
             $imagePath = $responseData['imagePath'] ?? '';
 
+            dd($products);
+
             return view('admin.products.droploo-product', compact('products', 'imagePath'));
         } else {
             return response()->json(['error' => 'Failed to fetch data from API'], $response->status());
