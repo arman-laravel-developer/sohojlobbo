@@ -59,6 +59,11 @@ class Product extends Model
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }
 
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? url('/product/images/' . $this->image) : null;
+    }
+
     public function productImages()
     {
         return $this->hasMany(ProductImage::class);
@@ -93,7 +98,7 @@ class Product extends Model
     {
         return $this->hasMany(RelatedProduct::class);
     }
-    
+
     public function orderDetails()
     {
         return $this->hasMany(OrderDetails::class);
