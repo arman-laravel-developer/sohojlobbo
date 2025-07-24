@@ -1006,9 +1006,9 @@ class ProductController extends Controller
     //Droploo Products with API...
     public function droplooProductList()
     {
-        $appKey = 'JQFZSTIBVLKFVJVC';
-        $appSecret = '0pZrcdlNIdCRaweJvqG4aRYoHsHXzfhf';
-        $userName = 'masemart_masemartcom';
+        $appKey = 'JVIVLOWFV848QQFE';
+        $appSecret = 'vq42EPd9yIkumHbf2B7jmprB2VcQLKb1';
+        $userName = 'arman_sohojlobbocom';
         $apiUrl = 'https://dropshipper.droploo.com/api/products';
 
         $response = Http::withHeaders([
