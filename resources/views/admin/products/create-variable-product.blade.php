@@ -96,15 +96,38 @@
                                                     <input type="file" name="image" id="image" class="form-control"><br>
                                                     <span style="color: red"> {{ $errors->has('image') ? $errors->first('image') : ' ' }}</span>
                                                 </div>
-                                                <label style="padding-bottom: 5px;font-weight: 600;font-size: 15px;letter-spacing: 1px;">Gallery Image, Price, Color, and Size <small style="color: red; font-size: 18px;">*</small></label>
-                                                <div class="input-group mb-3">
-                                                    <input type="file" name="gallery_image[]" id="gallery_image" class="form-control">
-                                                    <input type="text" name="price[]" id="price" class="form-control" placeholder="Price">
-                                                    <input type="text" name="color[]" id="color" class="form-control" placeholder="Product color">
-                                                    <input type="text" name="size[]" id="size" class="form-control" placeholder="Product size">
-                                                    <button class="btn btn-sm btn-primary" type="button" id="addMore">
-                                                        <i class="bx bx-plus-circle" aria-hidden="true" style="margin-left: 7px;"></i>
-                                                    </button>
+                                                <label style="padding-bottom: 5px; font-weight: 600; font-size: 15px; letter-spacing: 1px;">
+                                                    Gallery Image, Price, Color, and Size
+                                                    <small style="color: red; font-size: 18px;">*</small>
+                                                </label>
+
+                                                <div class="row g-2 align-items-center mb-3">
+                                                    <!-- Gallery Image -->
+                                                    <div class="col-md-3">
+                                                        <input type="file" name="gallery_image[]" class="form-control" required>
+                                                    </div>
+
+                                                    <!-- Retail Price -->
+                                                    <div class="col-md-2">
+                                                        <input type="text" name="price[]" class="form-control" placeholder="Price">
+                                                    </div>
+
+                                                    <!-- Color -->
+                                                    <div class="col-md-3">
+                                                        <input type="text" name="color[]" class="form-control" placeholder="Product Color">
+                                                    </div>
+
+                                                    <!-- Size -->
+                                                    <div class="col-md-3">
+                                                        <input type="text" name="size[]" class="form-control" placeholder="Product Size">
+                                                    </div>
+
+                                                    <!-- Add More Button -->
+                                                    <div class="col-md-1">
+                                                        <button class="btn btn-sm btn-primary" type="button" id="addMore">
+                                                            <i class="bx bx-plus-circle" style="margin-left: 3px;"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 <span style="color: red"> {{ $errors->has('gallery_image') ? $errors->first('gallery_image') : ' ' }}</span>
                                                 <span style="color: red"> {{ $errors->has('price') ? $errors->first('price') : ' ' }}</span>
@@ -205,10 +228,10 @@
             html += '<i class="bx bx-minus" aria-hidden="true" style="margin-left: 7px;"></i>';
             html += '</button>';
             html += '</div>';
-    
+
             $('#newRow').append(html);
         });
-    
+
         // remove row
         $(document).on('click', '#remove', function () {
             $(this).closest('#removeRow').remove();
