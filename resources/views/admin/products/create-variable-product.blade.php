@@ -224,15 +224,12 @@
                     <input type="file" name="gallery_image[]" class="form-control" required>
                 </div>
                 <div class="col-md-2">
-                    <input type="text" name="wholesale_price_variable[]" class="form-control" placeholder="Wholesale Price" required>
-                </div>
-                <div class="col-md-2">
                     <input type="text" name="price[]" class="form-control" placeholder="Price">
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <input type="text" name="color[]" class="form-control" placeholder="Color">
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <input type="text" name="size[]" class="form-control" placeholder="Size">
                 </div>
                 <div class="col-md-1">
