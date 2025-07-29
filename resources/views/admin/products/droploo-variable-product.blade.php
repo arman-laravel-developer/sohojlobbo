@@ -102,45 +102,90 @@
                                                     <small style="color: red; font-size: 18px;">*</small>
                                                 </label>
 
-                                                <div class="row g-2 align-items-center mb-3">
-                                                    <!-- Gallery Image -->
-                                                    <div class="col-md-3">
-                                                        <input type="file" name="gallery_image[]" class="form-control" required>
-                                                    </div>
+                                                @if(isset($product->productImages) && count($product->productImages) > 0)
+                                                    @foreach($product->productImages as $key => $image)
+                                                        <div class="row g-2 align-items-center mb-2 removeRow">
+                                                            <!-- Existing Image Preview -->
+                                                            <div class="col-md-3">
+                                                                <img src="{{ asset($image->image) }}" alt="gallery image" style="height: 60px; display:block; margin-bottom:5px;">
+                                                                <input type="file" name="gallery_image[]" class="form-control">
+                                                            </div>
 
-                                                    <!-- Wholesale Price -->
-                                                    <div class="col-md-2">
-                                                        <input type="text" name="wholesale_price_variable[]" class="form-control" placeholder="Wholesale Price" readonly disabled>
-                                                    </div>
+                                                            <!-- Wholesale Price -->
+                                                            <div class="col-md-2">
+                                                                <input type="text" name="wholesale_price_variable[]" class="form-control" placeholder="Wholesale Price"
+                                                                       value="{{ $image->wholesale_price ?? '' }}">
+                                                            </div>
 
-                                                    <!-- Retail Price -->
-                                                    <div class="col-md-2">
-                                                        <input type="text" name="price[]" class="form-control" placeholder="Price">
-                                                    </div>
+                                                            <!-- Retail Price -->
+                                                            <div class="col-md-2">
+                                                                <input type="text" name="price[]" class="form-control" placeholder="Price"
+                                                                       value="{{ $image->price ?? '' }}">
+                                                            </div>
 
-                                                    <!-- Color -->
-                                                    <div class="col-md-2">
-                                                        <input type="text" name="color[]" class="form-control" placeholder="Product Color">
-                                                    </div>
+                                                            <!-- Color -->
+                                                            <div class="col-md-2">
+                                                                <input type="text" name="color[]" class="form-control" placeholder="Color"
+                                                                       value="{{ $image->color ?? '' }}">
+                                                            </div>
 
-                                                    <!-- Size -->
-                                                    <div class="col-md-2">
-                                                        <input type="text" name="size[]" class="form-control" placeholder="Product Size">
-                                                    </div>
+                                                            <!-- Size -->
+                                                            <div class="col-md-2">
+                                                                <input type="text" name="size[]" class="form-control" placeholder="Size"
+                                                                       value="{{ $image->size ?? '' }}">
+                                                            </div>
 
-                                                    <!-- Add More Button -->
-                                                    <div class="col-md-1">
-                                                        <button class="btn btn-sm btn-primary" type="button" id="addMore">
-                                                            <i class="bx bx-plus-circle" style="margin-left: 3px;"></i>
-                                                        </button>
+                                                            <!-- Remove Button -->
+                                                            <div class="col-md-1">
+                                                                <button class="btn btn-sm btn-danger remove" type="button">
+                                                                    <i class="bx bx-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                @else
+                                                    <div class="row g-2 align-items-center mb-3 removeRow">
+                                                        <!-- Gallery Image -->
+                                                        <div class="col-md-3">
+                                                            <input type="file" name="gallery_image[]" class="form-control" required>
+                                                        </div>
+
+                                                        <!-- Wholesale Price -->
+                                                        <div class="col-md-2">
+                                                            <input type="text" name="wholesale_price_variable[]" class="form-control" placeholder="Wholesale Price">
+                                                        </div>
+
+                                                        <!-- Retail Price -->
+                                                        <div class="col-md-2">
+                                                            <input type="text" name="price[]" class="form-control" placeholder="Price">
+                                                        </div>
+
+                                                        <!-- Color -->
+                                                        <div class="col-md-2">
+                                                            <input type="text" name="color[]" class="form-control" placeholder="Product Color">
+                                                        </div>
+
+                                                        <!-- Size -->
+                                                        <div class="col-md-2">
+                                                            <input type="text" name="size[]" class="form-control" placeholder="Product Size">
+                                                        </div>
+
+                                                        <!-- Add More Button -->
+                                                        <div class="col-md-1">
+                                                            <button class="btn btn-sm btn-primary" type="button" id="addMore">
+                                                                <i class="bx bx-plus-circle" style="margin-left: 3px;"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @endif
+
+
                                                 <span style="color: red"> {{ $errors->has('gallery_image') ? $errors->first('gallery_image') : ' ' }}</span>
                                                 <span style="color: red"> {{ $errors->has('price') ? $errors->first('price') : ' ' }}</span>
                                                 <span style="color: red"> {{ $errors->has('color') ? $errors->first('color') : ' ' }}</span>
                                                 <span style="color: red"> {{ $errors->has('size') ? $errors->first('size') : ' ' }}</span>
-                                                <div id="newRow"></div>
 
+                                                <div id="newRow"></div>
                                                 <div id="newRowForColor"></div>
 
                                                 <label style="padding-bottom: 5px;font-weight: 600;font-size: 15px;letter-spacing: 1px;">Related Product ( Optional )</label>
