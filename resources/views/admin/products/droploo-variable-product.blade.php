@@ -33,11 +33,11 @@
                                         <div class="row">
                                             <input type="hidden" name="b_product_id" value="{{ $product['id'] }}" class="form-control" placeholder="Product ID From Banggomart...">
                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label style="padding-bottom: 5px;font-weight: 600;font-size: 15px;letter-spacing: 1px;">Priority</label>
-                                                    <input type="text" name="priority" value="{{ old('priority') }}" class="form-control" placeholder="Product priority"><br>
-                                                    <span style="color: red"> {{ $errors->has('priority') ? $errors->first('priority') : ' ' }}</span>
-                                                </div>
+{{--                                                <div class="form-group">--}}
+{{--                                                    <label style="padding-bottom: 5px;font-weight: 600;font-size: 15px;letter-spacing: 1px;">Priority</label>--}}
+{{--                                                    <input type="text" name="priority" value="{{ old('priority') }}" class="form-control" placeholder="Product priority"><br>--}}
+{{--                                                    <span style="color: red"> {{ $errors->has('priority') ? $errors->first('priority') : ' ' }}</span>--}}
+{{--                                                </div>--}}
                                                 <div class="form-group">
                                                     <label style="padding-bottom: 5px;font-weight: 600;font-size: 15px;letter-spacing: 1px;">Name <small style="color: red; font-size: 18px;">*</small></label>
                                                     <input type="text" name="name" value="{{ $product['name'] }}" class="form-control" placeholder="Product name"><br>
@@ -102,44 +102,37 @@
                                                     <small style="color: red; font-size: 18px;">*</small>
                                                 </label>
 
-                                                @if(isset($product->product_images) && count($product->product_images) > 0)
-                                                    @foreach($product->product_images as $image)
+                                                @if(isset($product['product_images']) && count($product['product_images']) > 0)
+                                                    @foreach($product['product_images'] as $image)
                                                         <div class="row g-2 align-items-center mb-2 removeRow">
                                                             <!-- Existing Image Preview -->
-                                                            <div class="col-md-3">
-                                                                <img src="{{ $image['imageUrl'] ?? asset('no-image.png') }}" alt="gallery image" style="height: 60px; display:block; margin-bottom:5px;">
-                                                                <input type="file" name="gallery_image[]" class="form-control">
+                                                            <div class="col-md-4">
+                                                                <input type="file" name="gallery_image[]" class="form-control" required>
+{{--                                                                <img src="{{ $image['imageUrl'] ?? asset('no-image.png') }}" alt="gallery image" style="height: 60px; display:block; margin-bottom:5px;">--}}
                                                             </div>
 
                                                             <!-- Wholesale Price -->
                                                             <div class="col-md-2">
                                                                 <input type="text" name="wholesale_price_variable[]" class="form-control" placeholder="Wholesale Price"
-                                                                       value="{{ $image['wholesale_price'] ?? '' }}">
+                                                                       value="{{ $image['wholesale_price'] ?? '' }}" disabled>
                                                             </div>
 
                                                             <!-- Retail Price -->
                                                             <div class="col-md-2">
                                                                 <input type="text" name="price[]" class="form-control" placeholder="Price"
-                                                                       value="{{ $image['price'] ?? '' }}">
+                                                                       value="" required>
                                                             </div>
 
                                                             <!-- Color -->
                                                             <div class="col-md-2">
                                                                 <input type="text" name="color[]" class="form-control" placeholder="Color"
-                                                                       value="{{ $image['color'] ?? '' }}">
+                                                                       value="{{ $image['color'] ?? '' }}" readonly>
                                                             </div>
 
                                                             <!-- Size -->
                                                             <div class="col-md-2">
                                                                 <input type="text" name="size[]" class="form-control" placeholder="Size"
-                                                                       value="{{ $image['size'] ?? '' }}">
-                                                            </div>
-
-                                                            <!-- Remove Button -->
-                                                            <div class="col-md-1">
-                                                                <button class="btn btn-sm btn-danger remove" type="button">
-                                                                    <i class="bx bx-minus"></i>
-                                                                </button>
+                                                                       value="{{ $image['size'] ?? '' }}" readonly>
                                                             </div>
                                                         </div>
                                                     @endforeach

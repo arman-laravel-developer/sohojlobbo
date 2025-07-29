@@ -102,8 +102,22 @@
                                                 </div>
                                                 <label style="padding-bottom: 5px;font-weight: 600;font-size: 15px;letter-spacing: 1px;">Gallery Image, Price, Color, and Size <small style="color: red; font-size: 18px;">*</small></label><br>
                                                 @foreach ($product->productImages as $image)
-                                                    <div style="display: inline-block; text-align: center; margin: 10px;">
+                                                    <div style="display: inline-block; text-align: center; margin: 10px; position: relative;">
                                                         <img src="{{ asset('galleryImage/'.$image->gallery_image) }}" height="100" width="100" alt="Product Image">
+
+                                                        <!-- Delete Icon -->
+                                                        <a href="{{url('/gallery-image/delete/'.$image->id)}}"
+                                                           style="position: absolute; top: 5px; right: 5px; background: red; color: white; border-radius: 50%; padding: 5px; text-decoration: none;"
+                                                           onclick="return confirm('Are you sure you want to delete this image?')">
+                                                            &times;
+                                                        </a>
+
+                                                        <!-- Edit Icon -->
+                                                        <a href="{{url('/gallery-image/edit/'.$image->id)}}"
+                                                           style="position: absolute; bottom: 5px; right: 5px; background: blue; color: white; border-radius: 50%; padding: 5px; text-decoration: none;">
+                                                            ✎
+                                                        </a>
+
                                                         <div>
                                                             <span>Price: {{$image->price ?? "N/A"}}</span><br>
                                                             <span>Color: {{$image->color ?? "N/A"}}</span><br>
@@ -111,14 +125,34 @@
                                                         </div>
                                                     </div>
                                                 @endforeach
-                                                <div class="input-group mb-3">
-                                                    <input type="file" name="gallery_image[]" id="gallery_image" class="form-control">
-                                                    <input type="text" name="price[]" id="price" class="form-control" placeholder="Price">
-                                                    <input type="text" name="color[]" id="color" class="form-control" placeholder="Product color">
-                                                    <input type="text" name="size[]" id="size" class="form-control" placeholder="Product size">
-                                                    <button class="btn btn-sm btn-primary" type="button" id="addMore">
-                                                        <i class="bx bx-plus-circle" aria-hidden="true" style="margin-left: 7px;"></i>
-                                                    </button>
+
+                                                <div class="row g-2 align-items-center mb-3">
+                                                    <!-- Gallery Image -->
+                                                    <div class="col-md-3">
+                                                        <input type="file" name="gallery_image[]" class="form-control" required>
+                                                    </div>
+
+                                                    <!-- Retail Price -->
+                                                    <div class="col-md-2">
+                                                        <input type="text" name="price[]" class="form-control" placeholder="Price" required>
+                                                    </div>
+
+                                                    <!-- Color -->
+                                                    <div class="col-md-2">
+                                                        <input type="text" name="color[]" class="form-control" placeholder="Product Color" required>
+                                                    </div>
+
+                                                    <!-- Size -->
+                                                    <div class="col-md-2">
+                                                        <input type="text" name="size[]" class="form-control" placeholder="Product Size" required>
+                                                    </div>
+
+                                                    <!-- Add More Button -->
+                                                    <div class="col-md-1">
+                                                        <button class="btn btn-sm btn-primary" type="button" id="addMore">
+                                                            <i class="bx bx-plus-circle" style="margin-left: 3px;"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 <span style="color: red"> {{ $errors->has('gallery_image') ? $errors->first('gallery_image') : ' ' }}</span>
                                                 <span style="color: red"> {{ $errors->has('price') ? $errors->first('price') : ' ' }}</span>
@@ -208,24 +242,35 @@
         });
     </script>
     <script>
-        $('#addMore').click(function(){
-            let html = '';
-            html += '<div class="input-group mb-3" id="removeRow">';
-            html += '<input type="file" name="gallery_image[]" id="gallery_image" class="form-control">';
-            html += '<input type="text" name="price[]" id="price" class="form-control" placeholder="Price">';
-            html += '<input type="text" name="color[]" id="color" class="form-control" placeholder="Product color">';
-            html += '<input type="text" name="size[]" id="size" class="form-control" placeholder="Product size">';
-            html += '<button class="btn btn-sm btn-danger" type="button" id="remove">';
-            html += '<i class="bx bx-minus" aria-hidden="true" style="margin-left: 7px;"></i>';
-            html += '</button>';
-            html += '</div>';
-    
+        $('#addMore').click(function () {
+            let html = `
+            <div class="row g-2 align-items-center mb-2 removeRow">
+                <div class="col-md-4">
+                    <input type="file" name="gallery_image[]" class="form-control" required>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="price[]" class="form-control" placeholder="Price">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="color[]" class="form-control" placeholder="Color">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="size[]" class="form-control" placeholder="Size">
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-sm btn-danger remove" type="button">
+                        <i class="bx bx-minus"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+
             $('#newRow').append(html);
         });
-    
-        // remove row
-        $(document).on('click', '#remove', function () {
-            $(this).closest('#removeRow').remove();
+
+        // Remove row
+        $(document).on('click', '.remove', function () {
+            $(this).closest('.removeRow').remove();
         });
     </script>
 @endpush

@@ -596,6 +596,57 @@ class ProductController extends Controller
             'product' => $this->product->edit($id)
         ]);
     }
+    public function galleryImageDelete ($id)
+    {
+        $galleryImage = ProductImage::find($id);
+
+        if ($galleryImage->gallery_image && file_exists(('galleryImage/').$galleryImage['gallery_image'])){
+            unlink('galleryImage/'.$galleryImage->gallery_image);
+        }
+
+        $galleryImage->delete();
+        return redirect()->back();
+    }
+
+    public function galleryImageEdit ($id)
+    {
+        $galleryImage = ProductImage::find($id);
+        $product = Product::find($galleryImage->product_id);
+        $productslug = $product->slug;
+        return view ('admin.products.single-gallery', compact('galleryImage', 'productslug', 'product'));
+    }
+
+    public function galleryImageUpdate (Request $request, $id)
+    {
+        $galleryImage = ProductImage::find($id);
+        $product = Product::find($galleryImage->product->id);
+        $productslug = $product->slug;
+
+        if(isset($request->image)){
+            if ($galleryImage->gallery_image && file_exists(('galleryImage/').$galleryImage['gallery_image'])){
+                unlink('galleryImage/'.$galleryImage->gallery_image);
+            }
+
+            $galleryImageName = rand().$request->name.'.'.$request->image->extension();
+            $imgGallery = Image::make($request->image->path());
+            $imgGallery->resize(440, 440, function ($const) {
+                $const->aspectRatio();
+            })->save('galleryImage'. '/'. $galleryImageName);
+            $imageUrl = url('galleryImage'.'/'.$galleryImageName);
+
+            $galleryImage->gallery_image = $galleryImageName;
+            $galleryImage->imageUrl = $imageUrl;
+        }
+        $galleryImage->price = $request->price;
+        $galleryImage->color = $request->color;
+        $galleryImage->size = $request->size;
+        $galleryImage->save();
+
+        if($product->is_variable == true){
+            return redirect('/variable-products/edit/' . $galleryImage->product_id . '/' . $productslug);
+        }
+        return redirect('/products/edit/' . $galleryImage->product_id . '/' . $productslug);
+    }
 
     public function editVariableProduct ($id, $slug)
     {
