@@ -217,24 +217,38 @@
         });
     </script>
     <script>
-        $('#addMore').click(function(){
-            let html = '';
-            html += '<div class="input-group mb-3" id="removeRow">';
-            html += '<input type="file" name="gallery_image[]" id="gallery_image" class="form-control">';
-            html += '<input type="text" name="price[]" id="price" class="form-control" placeholder="Price">';
-            html += '<input type="text" name="color[]" id="color" class="form-control" placeholder="Product color">';
-            html += '<input type="text" name="size[]" id="size" class="form-control" placeholder="Product size">';
-            html += '<button class="btn btn-sm btn-danger" type="button" id="remove">';
-            html += '<i class="bx bx-minus" aria-hidden="true" style="margin-left: 7px;"></i>';
-            html += '</button>';
-            html += '</div>';
+        $('#addMore').click(function () {
+            let html = `
+            <div class="row g-2 align-items-center mb-2 removeRow">
+                <div class="col-md-3">
+                    <input type="file" name="gallery_image[]" class="form-control" required>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="wholesale_price_variable[]" class="form-control" placeholder="Wholesale Price" required>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="price[]" class="form-control" placeholder="Price">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="color[]" class="form-control" placeholder="Color">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="size[]" class="form-control" placeholder="Size">
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-sm btn-danger remove" type="button">
+                        <i class="bx bx-minus"></i>
+                    </button>
+                </div>
+            </div>
+        `;
 
             $('#newRow').append(html);
         });
 
-        // remove row
-        $(document).on('click', '#remove', function () {
-            $(this).closest('#removeRow').remove();
+        // Remove row
+        $(document).on('click', '.remove', function () {
+            $(this).closest('.removeRow').remove();
         });
     </script>
 @endpush
