@@ -105,32 +105,35 @@
                                                 @if(isset($product['product_images']) && count($product['product_images']) > 0)
                                                     @foreach($product['product_images'] as $image)
                                                         <div class="row g-2 align-items-center mb-2 removeRow">
-                                                            <!-- Existing Image Preview -->
+                                                            <!-- Gallery Image -->
                                                             <div class="col-md-4">
+                                                                <label for="">Gallery Image <span class="text-danger">*</span></label>
                                                                 <input type="file" name="gallery_image[]" class="form-control" required>
-{{--                                                                <img src="{{ $image['imageUrl'] ?? asset('no-image.png') }}" alt="gallery image" style="height: 60px; display:block; margin-bottom:5px;">--}}
                                                             </div>
 
                                                             <!-- Wholesale Price -->
                                                             <div class="col-md-2">
+                                                                <label for="">Wholesale Price</label>
                                                                 <input type="text" name="wholesale_price_variable[]" class="form-control" placeholder="Wholesale Price"
                                                                        value="{{ $image['wholesale_price'] ?? '' }}" disabled>
                                                             </div>
 
                                                             <!-- Retail Price -->
                                                             <div class="col-md-2">
-                                                                <input type="text" name="price[]" class="form-control" placeholder="Price"
-                                                                       value="" required>
+                                                                <label for="">Retail Price <span class="text-danger">*</span></label>
+                                                                <input type="text" name="price[]" class="form-control" placeholder="Price" value="" required>
                                                             </div>
 
                                                             <!-- Color -->
                                                             <div class="col-md-2">
+                                                                <label for="">Color</label>
                                                                 <input type="text" name="color[]" class="form-control" placeholder="Color"
                                                                        value="{{ $image['color'] ?? '' }}" readonly>
                                                             </div>
 
                                                             <!-- Size -->
                                                             <div class="col-md-2">
+                                                                <label for="">Size</label>
                                                                 <input type="text" name="size[]" class="form-control" placeholder="Size"
                                                                        value="{{ $image['size'] ?? '' }}" readonly>
                                                             </div>
@@ -139,22 +142,28 @@
                                                 @else
                                                     <div class="row g-2 align-items-center mb-2 removeRow">
                                                         <div class="col-md-3">
+                                                            <label for="">Gallery Image <span class="text-danger">*</span></label>
                                                             <input type="file" name="gallery_image[]" class="form-control" required>
                                                         </div>
                                                         <div class="col-md-2">
+                                                            <label for="">Wholesale Price</label>
                                                             <input type="text" name="wholesale_price_variable[]" class="form-control" placeholder="Wholesale Price">
                                                         </div>
                                                         <div class="col-md-2">
+                                                            <label for="">Retail Price</label>
                                                             <input type="text" name="price[]" class="form-control" placeholder="Price">
                                                         </div>
                                                         <div class="col-md-2">
+                                                            <label for="">Color</label>
                                                             <input type="text" name="color[]" class="form-control" placeholder="Color">
                                                         </div>
                                                         <div class="col-md-2">
+                                                            <label for="">Size</label>
                                                             <input type="text" name="size[]" class="form-control" placeholder="Size">
                                                         </div>
                                                         <div class="col-md-1">
-                                                            <button class="btn btn-sm btn-primary" type="button" id="addMore">
+                                                            <label for="">&nbsp;</label>
+                                                            <button class="btn btn-sm btn-primary d-block" type="button" id="addMore">
                                                                 <i class="bx bx-plus-circle" style="margin-left: 3px;"></i>
                                                             </button>
                                                         </div>
