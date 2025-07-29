@@ -129,22 +129,22 @@
                                                 <div class="row g-2 align-items-center mb-3">
                                                     <!-- Gallery Image -->
                                                     <div class="col-md-3">
-                                                        <input type="file" name="gallery_image[]" class="form-control" required>
+                                                        <input type="file" name="gallery_image[]" class="form-control">
                                                     </div>
 
                                                     <!-- Retail Price -->
                                                     <div class="col-md-2">
-                                                        <input type="text" name="price[]" class="form-control" placeholder="Price" required>
+                                                        <input type="text" name="price[]" class="form-control" placeholder="Price">
                                                     </div>
 
                                                     <!-- Color -->
                                                     <div class="col-md-2">
-                                                        <input type="text" name="color[]" class="form-control" placeholder="Product Color" required>
+                                                        <input type="text" name="color[]" class="form-control" placeholder="Product Color">
                                                     </div>
 
                                                     <!-- Size -->
                                                     <div class="col-md-2">
-                                                        <input type="text" name="size[]" class="form-control" placeholder="Product Size" required>
+                                                        <input type="text" name="size[]" class="form-control" placeholder="Product Size">
                                                     </div>
 
                                                     <!-- Add More Button -->
@@ -246,7 +246,7 @@
             let html = `
             <div class="row g-2 align-items-center mb-2 removeRow">
                 <div class="col-md-4">
-                    <input type="file" name="gallery_image[]" class="form-control" required>
+                    <input type="file" name="gallery_image[]" class="form-control" >
                 </div>
                 <div class="col-md-2">
                     <input type="text" name="price[]" class="form-control" placeholder="Price">
